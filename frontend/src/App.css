@@ -1,0 +1,74 @@
+
+
+.predict {
+  padding-top: 1em;
+  padding-left: 1em;
+  color: #494d4f;
+  font-weight: bold;
+}
+
+.select-menu {
+  padding-top: 2em;
+  padding-left: 2em;
+  padding-right: 50em;
+}
+
+
+.select-menu .par {
+  padding-left: 0.5em;
+  margin-bottom: -.9em;
+}
+
+.status {
+  padding-top: 1em;
+  padding-left: 2em;
+}
+
+
+.analysis {
+  padding-top: 1em;
+  color: #ff6969;
+  font-weight: bold;
+  text-align: center;
+}
+
+
+.line-diagram {
+  padding-top: 2em;
+  padding-left: 2em;
+}
+
+.container {
+  display: flex;
+  padding-left: -2em;
+
+}
+
+.home {
+    flex: 1;
+    padding-right: 2em;
+}  
+
+.away {
+    flex: 1;
+} 
+
+
+.analysis-1 {
+  padding-top: 1em;
+  color: #00aba9;
+  font-weight: normal;
+  text-align: center;
+}
+
+#twitter {
+  margin: auto;
+  padding: 10px;
+}
+
+#head-to-head {
+  margin: auto;
+  padding: 10px;
+}
+
+
