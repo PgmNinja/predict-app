@@ -9,7 +9,7 @@ import pickle
 import numpy as np
 import pandas as pd
 
-from .utils import twitter_api, clean_txt, get_polar, get_data_set 
+from .utils import find_polar, get_data_set
 
 
 def model_loaded():
@@ -27,38 +27,17 @@ class PredictView(APIView):
         model = data['model']
         le_home_team = data['le_home_team']
         le_away_team = data['le_away_team']
-
         
-        api = twitter_api()
+        home_team = request.data.get('home_team', None)
+        away_team = request.data.get('away_team', None)
 
-        home_team = request.data['home_team']
-        away_team = request.data['away_team']
-        request.session['home'] = home_team
-        request.session['away'] = away_team
-
-        home_twt = api.search_tweets(q=home_team, count=100000, lang='en', tweet_mode='extended')
-        away_twt = api.search_tweets(q=away_team, count=100000, lang='en', tweet_mode='extended')
-
-        df_home = pd.DataFrame([tweet.full_text for tweet in home_twt], columns=['Tweets'])
-        df_away = pd.DataFrame([tweet.full_text for tweet in away_twt], columns=['Tweets'])
-
-        df_home['Tweets'] = df_home['Tweets'].apply(clean_txt)
-        df_away['Tweets'] = df_away['Tweets'].apply(clean_txt)
-
-        df_home['Polarity'] = df_home['Tweets'].apply(get_polar)
-        df_away['Polarity'] = df_away['Tweets'].apply(get_polar)
-
-        home_polar = np.mean(df_home['Polarity'].values)
-        away_polar = np.mean(df_away['Polarity'].values)
-        request.session['home_polar'] = home_polar
-        request.session['away_polar'] = away_polar
+        home_polar = find_polar(home_team)
+        away_polar = find_polar(away_team)
 
         if home_polar >= away_polar:
             X = np.array([[home_team, away_team]])
         else:
             X = np.array([[away_team, home_team]])
-
-        # X = np.array([[away_team, home_team]])
 
         X1 = X[0].copy()
 
@@ -86,62 +65,64 @@ class PredictView(APIView):
                     "probability": probability
                     }
 
-        print(result)
-
         return Response(content, status=status.HTTP_200_OK)
 
 
 
-
 class AnalysisView(APIView):
-    def get(self, request, *args, **kwargs):
+    serializer_class = SelectTeamSerializer
+
+    def find_stats(self, dataframe, team):
+        stats_dict = {}
+
+        for i in range(dataframe.shape[0]):
+            if (dataframe['HomeTeam'].iloc[i] == team and dataframe['Results'].iloc[i] == 2) or \
+            (dataframe['AwayTeam'].iloc[i] == team and dataframe['Results'].iloc[i] == 0):
+                year = dataframe['Year'].iloc[i]
+                if year in stats_dict:
+                    stats_dict[int(year)] += 1 
+                else:
+                    stats_dict[int(year)] = 1
+
+        return stats_dict
+
+
+    def find_df_head_to_head(self, data, home_team, away_team):
+        df_head_to_head = pd.concat([data.loc[(data['HomeTeam'] == home_team) & (data['AwayTeam'] == away_team)], \
+            data.loc[(data['HomeTeam'] == away_team) & (data['AwayTeam'] == home_team)]])
+
+        return df_head_to_head
+
+
+    def find_team_wins(self, dataframe, team):
+        wins = 0
+        for i in range(dataframe.shape[0]):
+            if ((dataframe['HomeTeam'].iloc[i] == team) and (dataframe['Results'].iloc[i] == 2)) or \
+            ((dataframe['AwayTeam'].iloc[i] == team) and (dataframe['Results'].iloc[i] == 0)):
+                wins += 1
+
+        return wins
+        
+
+    def post(self, request, *args, **kwargs):
         data = get_data_set()
-        home_team = request.session['home']
-        away_team = request.session['away']
-        home_polar = request.session['home_polar']*100
-        away_polar = request.session['away_polar']*100
+        home_team = request.data.get('home_team', None)
+        away_team = request.data.get('away_team', None)
+        home_polar = find_polar(home_team)
+        away_polar = find_polar(away_team)
 
         home_team_df = pd.concat([data.loc[data['HomeTeam'] == home_team], data.loc[data['AwayTeam'] == home_team]])
         away_team_df = pd.concat([data.loc[data['HomeTeam'] == away_team], data.loc[data['AwayTeam'] == away_team]])
 
-        df_head_to_head = pd.concat([data.loc[(data['HomeTeam'] == home_team) & (data['AwayTeam'] == away_team)], \
-            data.loc[(data['HomeTeam'] == away_team) & (data['AwayTeam'] == home_team)]])
+        df_head_to_head = self.find_df_head_to_head(data, home_team, away_team)
 
-        home_stats = {}
-        away_stats = {}
+        home_stats = self.find_stats(home_team_df, home_team)
+        away_stats = self.find_stats(away_team_df, away_team)
 
-        home_team_win = 0
-        away_team_win = 0
+        home_team_win = self.find_team_wins(df_head_to_head, home_team)
+        away_team_win = self.find_team_wins(df_head_to_head, away_team)
 
-        for i in range(home_team_df.shape[0]):
-            if (home_team_df['HomeTeam'].iloc[i] == home_team and home_team_df['Results'].iloc[i] == 2) or \
-            (home_team_df['AwayTeam'].iloc[i] == home_team and home_team_df['Results'].iloc[i] == 0):
-                year = home_team_df['Year'].iloc[i]
-                if year in home_stats:
-                    home_stats[int(year)] += 1 
-                else:
-                    home_stats[int(year)] = 1
-
-        for i in range(away_team_df.shape[0]):
-            if (away_team_df['HomeTeam'].iloc[i] == away_team and away_team_df['Results'].iloc[i] == 2) or \
-            (away_team_df['AwayTeam'].iloc[i] == away_team and away_team_df['Results'].iloc[i] == 0):
-                year = away_team_df['Year'].iloc[i]
-                if year in away_stats:
-                    away_stats[int(year)] += 1 
-                else:
-                    away_stats[int(year)] = 1
-
-
-        for i in range(df_head_to_head.shape[0]):
-            if ((df_head_to_head['HomeTeam'].iloc[i] == home_team) and (df_head_to_head['Results'].iloc[i] == 2)) or \
-            ((df_head_to_head['AwayTeam'].iloc[i] == home_team) and (df_head_to_head['Results'].iloc[i] == 0)):
-                home_team_win += 1
-
-            if ((df_head_to_head['HomeTeam'].iloc[i] == away_team) and (df_head_to_head['Results'].iloc[i] == 2)) or \
-            ((df_head_to_head['AwayTeam'].iloc[i] == away_team) and (df_head_to_head['Results'].iloc[i] == 0)):
-                away_team_win += 1
-
-
+        
         content = {
         'home_team': home_team,
         'away_team': away_team,

@@ -2,6 +2,7 @@ import tweepy
 import re
 from textblob import TextBlob
 import pandas as pd
+import numpy as np
 
 
 
@@ -58,3 +59,14 @@ def get_data_set():
     dataset['Year'] = data['Year']
 
     return dataset
+
+
+
+def find_polar(team):
+    api = twitter_api()
+    twt = api.search_tweets(q=team, count=100000, lang='en', tweet_mode='extended')
+    data_frame = pd.DataFrame([tweet.full_text for tweet in twt], columns=['Tweets'])
+    data_frame['Tweets'] = data_frame['Tweets'].apply(clean_txt)
+    data_frame['Polarity'] = data_frame['Tweets'].apply(get_polar)
+    polarity = np.mean(data_frame['Polarity'].values)
+    return polarity
