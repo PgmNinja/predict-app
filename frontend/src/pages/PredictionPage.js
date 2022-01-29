@@ -1,6 +1,29 @@
 import React, { useState} from 'react';
 import teams from '../assets/teams';
-import { PieChart, Pie, Legend, Tooltip } from "recharts";
+import { Link } from "react-router-dom"
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+    ArcElement
+  } from 'chart.js';
+  import { Pie } from 'react-chartjs-2';
+  
+  ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+    ArcElement
+  );
 
 const PredictionPage = ({history}) => {
     let [homeTeam, setHomeTeam] = useState("")
@@ -8,15 +31,26 @@ const PredictionPage = ({history}) => {
     let [result, setResult] = useState("")
     let [home, setHome] = useState("")
     let [away, setAway] = useState("")
-    let [homeProba, setHomeProba] = useState(null)
-    let [awayProba, setAwayProba] = useState(null)
-    let [drawProba, setDrawProba] = useState(null)
+    let [proba, setProba] = useState([])
 
-    let data01 = [
-        { name: home, value: homeProba },
-        { name: away, value: awayProba },
-        { name: "Draw", value: drawProba},
-      ];
+
+    const data01 = {
+        labels: [home, away, "Draw"],
+        datasets: [
+          {
+            label: '# of Votes',
+            data: proba,
+            backgroundColor: [
+              "#00aba9",
+              "#742774",
+              "#494d4f"
+            ],
+  
+            borderWidth: 1,
+          },
+        ],
+      };
+  
 
     let predictResult = async () => {
         fetch('http://127.0.0.1:8000/api/predict/', {
@@ -34,20 +68,21 @@ const PredictionPage = ({history}) => {
            .then(function(data) {
             console.log('Result:', data)
             setResult(data);
-            setHomeProba(data.probability.home_team)
-            setAwayProba(data.probability.away_team)
-            setDrawProba(data.probability.draw)
+            setProba(data.probability)
             setHome(data.home_team)
             setAway(data.away_team)
            })
     }
 
     let handleSubmit = () => {
+        localStorage.setItem('homeTeam', homeTeam)
+        localStorage.setItem('awayTeam', awayTeam)
         predictResult()
         history.push('/')
     }
 
     return <div>
+        <h3 className='analysis'>Let's Predict...</h3>
             <div  className='select-menu'>
                 <select className='form-select' onChange={(e)=>{
                     const selectedHomeTeam=e.target.value;
@@ -71,7 +106,7 @@ const PredictionPage = ({history}) => {
                 </select>
             </div>
             <div className='select-menu'>
-                <button className='btn btn-secondary' onClick={handleSubmit}>Predict</button>
+                <button className='btn btn-success' onClick={handleSubmit}>Predict</button>
             </div>
                 
              
@@ -79,19 +114,10 @@ const PredictionPage = ({history}) => {
                <div className='status'>
                     <p className='lead'>{result.result}</p>
                     <h4 className='text-secondary'>Winning Probability</h4>
-                    <PieChart width={1000} height={400}>
-                        <Pie
-                            dataKey="value"
-                            isAnimationActive={false}
-                            data={data01}
-                            cx={200}
-                            cy={200}
-                            outerRadius={80}
-                            fill="#63686b"
-                            label
-                        />
-                        <Tooltip />
-                    </PieChart>
+                    <div className='pie-diagram'>
+                    <Pie data={data01} />
+                    </div>
+                    <Link className='link' to={'/analysis'}>See analysis</Link>
                 </div>
                 
             ): ( 

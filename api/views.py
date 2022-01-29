@@ -56,7 +56,7 @@ class PredictView(APIView):
             result = X1[1] + ' wins'
 
         probs = model.predict_proba(X)[0]
-        probability = {"home_team": math.floor(probs[2]*100), "away_team": math.floor(probs[0]*100), "draw": math.floor(probs[1]*100)}
+        probability = [math.floor(probs[2]*100), math.floor(probs[0]*100), math.floor(probs[1]*100)]
 
         content = {
                     "home_team": str(X1[0]),
@@ -102,6 +102,16 @@ class AnalysisView(APIView):
                 wins += 1
 
         return wins
+
+    def find_wins_and_years(self, stats):
+        years_list = []
+        wins_list = []
+
+        for year, wins in stats.items():
+            years_list.append(year)
+            wins_list.append(wins)
+
+        return [years_list, wins_list]
         
 
     def post(self, request, *args, **kwargs):
@@ -122,19 +132,24 @@ class AnalysisView(APIView):
         home_team_win = self.find_team_wins(df_head_to_head, home_team)
         away_team_win = self.find_team_wins(df_head_to_head, away_team)
 
+        home_win_stats = self.find_wins_and_years(home_stats)[1]
+        away_win_stats = self.find_wins_and_years(away_stats)[1]
+
+        home_years = self.find_wins_and_years(home_stats)[0]
+        away_years = self.find_wins_and_years(away_stats)[0]
+
+        years = home_years if len(home_years) >= len(away_years) else away_years
+
+
         
         content = {
-        'home_team': home_team,
-        'away_team': away_team,
-        'home_stats': home_stats,
-        'away_stats': away_stats,
-        'home_count': home_team_win,
-        'away_count': away_team_win,
-        'home_polar': home_polar,
-        'away_polar': away_polar,
+        'count': [home_team_win, away_team_win],
+        'polarity': [home_polar, away_polar],
+        'home_win_stats': home_win_stats[::-1],
+        'away_win_stats': away_win_stats[::-1],
+        'years': years[::-1]
         }
 
-        print(home_stats)
 
         return Response(content, status=status.HTTP_200_OK)
 

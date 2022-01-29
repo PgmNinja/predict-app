@@ -12,7 +12,6 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Header />
         <Route path="/" exact component={PredictionPage} />
         <Route path="/analysis" component={AnalysisPage} />
       </div>

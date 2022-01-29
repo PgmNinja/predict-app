@@ -3,13 +3,14 @@
 .predict {
   padding-top: 1em;
   padding-left: 1em;
-  color: #494d4f;
   font-weight: bold;
+  color: #00aba9;
+  
 }
 
 .select-menu {
   padding-top: 2em;
-  padding-left: 2em;
+  padding-left: 3em;
   padding-right: 50em;
 }
 
@@ -27,13 +28,22 @@
 
 .analysis {
   padding-top: 1em;
-  color: #ff6969;
+  color: #494d4f;
   font-weight: bold;
-  text-align: center;
+  padding-left: 2em;
 }
-
+BarElement,
 
 .line-diagram {
+  height: 50%;
+  width: 50%;
+  padding-top: 2em;
+  padding-left: 2em;
+}
+
+.pie-diagram {
+  height: 20%;
+  width: 20%;
   padding-top: 2em;
   padding-left: 2em;
 }
@@ -58,7 +68,7 @@
   padding-top: 1em;
   color: #00aba9;
   font-weight: normal;
-  text-align: center;
+  padding-left: 2em;
 }
 
 #twitter {
@@ -70,5 +80,15 @@
   margin: auto;
   padding: 10px;
 }
+
+.btn-success {
+  background-color: #00aba9 !important;
+}
+
+.link {
+  padding-top: 1em;
+  padding-left: 2em;
+}
+
 
 
