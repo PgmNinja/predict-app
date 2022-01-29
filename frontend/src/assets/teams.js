@@ -1,4 +1,5 @@
 let teams = [
+    {"id": 0, "team": "Select a Team"}, 
     {"id": 1, "team": "Arsenal"}, 
     {"id": 2, "team": "Aston Villa"},
     {"id": 3, "team": "Birmingham"},

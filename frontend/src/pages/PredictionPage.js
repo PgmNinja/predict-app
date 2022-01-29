@@ -13,6 +13,7 @@ import {
     ArcElement
   } from 'chart.js';
   import { Pie } from 'react-chartjs-2';
+  import * as ReactBootStrap from 'react-bootstrap'
   
   ChartJS.register(
     CategoryScale,
@@ -26,6 +27,7 @@ import {
   );
 
 const PredictionPage = ({history}) => {
+    let [loading, setLoading] = useState(false)
     let [homeTeam, setHomeTeam] = useState("")
     let [awayTeam, setAwayTeam] = useState("")
     let [result, setResult] = useState("")
@@ -41,9 +43,9 @@ const PredictionPage = ({history}) => {
             label: '# of Votes',
             data: proba,
             backgroundColor: [
-              "#00aba9",
-              "#742774",
-              "#494d4f"
+              "#d3d6db",
+              "#5a5e63",
+              "#282b2e"
             ],
   
             borderWidth: 1,
@@ -53,6 +55,7 @@ const PredictionPage = ({history}) => {
   
 
     let predictResult = async () => {
+        setLoading(true)
         fetch('http://127.0.0.1:8000/api/predict/', {
             method: "POST",
             headers: {
@@ -62,6 +65,7 @@ const PredictionPage = ({history}) => {
                 "home_team": homeTeam,
                 "away_team": awayTeam
             })
+            
         }).then(function(response) {
             return response.json();
            })
@@ -71,7 +75,8 @@ const PredictionPage = ({history}) => {
             setProba(data.probability)
             setHome(data.home_team)
             setAway(data.away_team)
-           })
+            setLoading(false)
+           });
     }
 
     let handleSubmit = () => {
@@ -105,26 +110,31 @@ const PredictionPage = ({history}) => {
                     ))}
                 </select>
             </div>
+
             <div className='select-menu'>
-                <button className='btn btn-success' onClick={handleSubmit}>Predict</button>
+                <button className='btn btn-secondary' onClick={handleSubmit}>Predict</button>
             </div>
-                
-             
-            {result ? (
-               <div className='status'>
-                    <p className='lead'>{result.result}</p>
-                    <h4 className='text-secondary'>Winning Probability</h4>
-                    <div className='pie-diagram'>
-                    <Pie data={data01} />
-                    </div>
-                    <Link className='link' to={'/analysis'}>See analysis</Link>
-                </div>
-                
-            ): ( 
+   
+            {loading ? (
+
             <div className='status'>
                 <p className='lead'>{result.result}</p>
+                <ReactBootStrap.Spinner animation="border" />
             </div>
-            )} 
+    
+            ): [
+            
+            (result ? <div className='status'>
+                <p className='lead'>{result.result}</p>
+                <h4 className='text-secondary'>Winning Probability</h4>
+                <div className='pie-diagram-predict'>
+                <Pie data={data01} />
+                </div>
+                <Link className='link' to={'/analysis'}>See analysis</Link>
+            </div>: null)
+            
+            
+            ]} 
          </div>;
     };
 

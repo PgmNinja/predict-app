@@ -12,6 +12,7 @@ import {
   ArcElement
 } from 'chart.js';
 import { Line, Pie, Bar } from 'react-chartjs-2';
+import * as ReactBootStrap from 'react-bootstrap'
 
 ChartJS.register(
   CategoryScale,
@@ -28,7 +29,8 @@ ChartJS.register(
 
 
 const AnalysisPage = ({history}) => {
-
+  
+  let [loading, setLoading] = useState(false)
   let [homeTeam, setHomeTeam] = useState("")
   let [awayTeam, setAwayTeam] = useState("")
   let [homeStats, setHomeStats] = useState([])
@@ -102,6 +104,7 @@ const AnalysisPage = ({history}) => {
   
   
   let analysisResult = async () => {
+    setLoading(true)
     fetch('http://127.0.0.1:8000/api/analysis/', {
         method: "POST",
         headers: {
@@ -122,25 +125,31 @@ const AnalysisPage = ({history}) => {
       setYears(data.years)
       setHeadToHead(data.count)
       setPolarity(data.polarity)
+      setLoading(false)
 
      })
 }
  
 
   return <div>
-      <h1 className='analysis'>Analysis</h1>
-      <h3 className='analysis-1'>Performance over Years</h3>
-      <div className="line-diagram">
-        <Line data={data01} />
+    {loading ? (<div className='spinner'><ReactBootStrap.Spinner animation="border" /></div>): (
+        <div>
+          <h1 className='analysis'>Analysis</h1>
+          <h3 className='analysis-1'>Performance over Years</h3>
+          <div className="line-diagram">
+            <Line data={data01} />
+          </div>
+          <h3 className='analysis-1'>Head to Head Analysis</h3>
+          <div className='pie-diagram'>
+            <Pie data={data02} />
+          </div>
+          <h3 className='analysis-1'>Support on Twitter</h3>
+          <div className='line-diagram'>
+            <Bar data={data03} />
+          </div>
       </div>
-      <h3 className='analysis-1'>Head to Head Analysis</h3>
-      <div className='pie-diagram'>
-        <Pie data={data02} />
-      </div>
-      <div className='line-diagram'>
-        <Bar data={data03} />
-      </div>
-
+    )}
+      
 
     </div>
 
