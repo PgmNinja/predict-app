@@ -12,8 +12,10 @@ import {
     Legend,
     ArcElement
   } from 'chart.js';
-  import { Pie } from 'react-chartjs-2';
-  import * as ReactBootStrap from 'react-bootstrap'
+import { Pie } from 'react-chartjs-2';
+import * as ReactBootStrap from 'react-bootstrap'
+import PredictHeader from '../components/PredictHeader'
+import Instructions from '../components/Instructions'
   
   ChartJS.register(
     CategoryScale,
@@ -87,7 +89,7 @@ const PredictionPage = ({history}) => {
     }
 
     return <div>
-        <h3 className='analysis'>Let's Predict...</h3>
+        <PredictHeader />
             <div  className='select-menu'>
                 <select className='form-select' onChange={(e)=>{
                     const selectedHomeTeam=e.target.value;
@@ -131,9 +133,8 @@ const PredictionPage = ({history}) => {
                 <Pie data={data01} />
                 </div>
                 <Link className='link' to={'/analysis'}>See analysis</Link>
-            </div>: null)
-            
-            
+            </div>: 
+                <Instructions />)          
             ]} 
          </div>;
     };

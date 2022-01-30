@@ -12,7 +12,16 @@ import {
   ArcElement
 } from 'chart.js';
 import { Line, Pie, Bar } from 'react-chartjs-2';
+
 import * as ReactBootStrap from 'react-bootstrap'
+
+import 'bootstrap/dist/css/bootstrap.css';
+import Carousel from 'react-bootstrap/Carousel';
+
+import AnalysisHeader from '../components/AnalysisHeader'
+import Spinner from '../components/Spinner'
+
+import AnalysisInst from '../components/AnalysisInst'
 
 ChartJS.register(
   CategoryScale,
@@ -66,7 +75,7 @@ const AnalysisPage = ({history}) => {
           label:awayTeam,
           data: awayStats,
           fill: false,
-          borderColor: "#742774"
+          borderColor: "#494d4f"
         }
       ]
     };
@@ -79,7 +88,7 @@ const AnalysisPage = ({history}) => {
           data: headtToHead,
           backgroundColor: [
             "rgba(75,192,192,1)",
-            "#742774"
+            "#494d4f"
           ],
 
           borderWidth: 1,
@@ -132,21 +141,35 @@ const AnalysisPage = ({history}) => {
  
 
   return <div>
-    {loading ? (<div className='spinner'><ReactBootStrap.Spinner animation="border" /></div>): (
+    {loading ? (<Spinner />): (
         <div>
-          <h1 className='analysis'>Analysis</h1>
-          <h3 className='analysis-1'>Performance over Years</h3>
-          <div className="line-diagram">
-            <Line data={data01} />
-          </div>
-          <h3 className='analysis-1'>Head to Head Analysis</h3>
-          <div className='pie-diagram'>
-            <Pie data={data02} />
-          </div>
-          <h3 className='analysis-1'>Support on Twitter</h3>
-          <div className='line-diagram'>
-            <Bar data={data03} />
-          </div>
+            <AnalysisHeader />
+
+          <Carousel className='carousel'>
+            <Carousel.Item interval={1500}>
+                <h3 className='analysis-1'>Performance over Years</h3>
+                <div className="line-diagram">
+                  <Line data={data01} />
+                </div>
+                </Carousel.Item>
+
+              <Carousel.Item interval={1500}>
+                <h3 className='analysis-1'>Head to Head Analysis</h3>
+                <div className='pie-diagram'>
+                  <Pie data={data02} />
+                </div>
+              </Carousel.Item>
+
+              <Carousel.Item interval={1500}>
+                <h3 className='analysis-1'>Support on Twitter</h3>
+                <div className='line-diagram'>
+                  <Bar data={data03} />
+                </div>
+              </Carousel.Item>
+          </Carousel>
+
+          <AnalysisInst />
+
       </div>
     )}
       

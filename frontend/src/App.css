@@ -2,7 +2,7 @@
 .App {
   width: 100%;
   max-width: 900px;
-  height: 150vh;
+  height: 88vh;
   margin: 0 auto;
   background-color: var(--color-white);
   box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2);
@@ -37,10 +37,14 @@
 
 
 .analysis {
-  padding-top: 1em;
+  padding-top: 2em;
   color: #494d4f;
   font-weight: bold;
-  padding-left: 2em;
+  align-items: center;
+  padding: 16px;
+  justify-content: space-between;
+  background-color: var(--color-lighter);
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 
@@ -56,9 +60,9 @@
 .pie-diagram {
   padding-top: 2em;
   padding-bottom: 2em;
-  margin-left: 19em;
-  height: 40%;
-  width: 40%;
+  margin-left: 17em;
+  height: 33%;
+  width: 33%;
 }
 
 .container {
@@ -81,7 +85,6 @@
   padding-top: 1em;
   color: #00aba9;
   font-weight: normal;
-  padding-left: 2em;
 }
 
 #twitter {
@@ -112,6 +115,14 @@
 
 .spinner {
   padding-top: 25em;
+}
+
+.carousel {
+  position: fixed;
+  padding-bottom: 2em;
+  background-color: #e3e5e6;
+  margin-left: 1em;
+  margin-right: 1em;
 }
 
 

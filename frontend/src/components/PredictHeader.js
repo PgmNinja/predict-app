@@ -1,8 +1,8 @@
 import React from 'react';
 
 const Header = () => {
-  return <div className='predict'>
-      <h1>Prediction App</h1>
+  return <div className='analysis'>
+      <h1>Let's predict...</h1>
   </div>;
 };
 
