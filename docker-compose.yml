@@ -1,18 +1,6 @@
 version: '3'
 
 services:
-
-  db:
-    image: postgres
-    volumes:
-      - ./data/db:/var/lib/postgresql/data
-
-    environment:
-      - POSTGRES_DB=prediction_app_db
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=@Niranjana99
-    container_name: postgres_db
-
   backend:
     build:
       context: ./prediction-app-backend
