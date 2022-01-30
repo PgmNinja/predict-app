@@ -121,7 +121,7 @@
   .App {
     width: 100%;
     max-width: 900px;
-    height: 88vh;
+    height: 100vh;
     margin: 0 auto;
     background-color: var(--color-white);
     box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2);
