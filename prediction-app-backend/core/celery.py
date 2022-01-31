@@ -13,17 +13,17 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.conf.beat_schedule = {
     'load_data_periodically': {
         'task': 'services.tasks.weekly_data_load',
-        'schedule': crontab(hour=22, minute=5, day_of_week=3)
+        'schedule': crontab(hour=18, minute=0, day_of_week=1)
     },
 
     'save_data_periodically': {
         'task': 'services.tasks.weekly_data_save',
-        'schedule': crontab(hour=22, minute=7, day_of_week=3)
+        'schedule': crontab(hour=18, minute=3, day_of_week=1)
     },
 
     'save_model_periodically': {
         'task': 'services.tasks.weekly_model_save',
-        'schedule': crontab(hour=22, minute=8, day_of_week=3)
+        'schedule': crontab(hour=18, minute=5, day_of_week=1)
     }
 
 }
