@@ -68,7 +68,6 @@ services:
     restart: on-failure
 
 
-
   backend:
     build:
       context: ./prediction-app-backend
