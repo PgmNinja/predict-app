@@ -1,8 +1,22 @@
 FROM python:3.8-slim
 ENV PYTHONUNBUFFERED 1
 RUN pip install --upgrade pip
+
+RUN useradd --system --user-group app
+
 WORKDIR /prediction-app-backend
 COPY requirements.txt requirements.txt
 RUN pip install --quiet --no-cache-dir -r requirements.txt
+
+COPY ./entrypoint.sh /prediction-app-backend
+RUN sed -i 's/\r$//g' /prediction-app-backend/entrypoint.sh
+RUN chmod +x /prediction-app-backend/entrypoint.sh
+
 EXPOSE 5001
 COPY . .
+
+RUN chown -R app:app /prediction-app-backend
+USER app
+
+RUN ["chmod", "+x", "/prediction-app-backend/entrypoint.sh"]
+ENTRYPOINT ["/prediction-app-backend/entrypoint.sh"]
