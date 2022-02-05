@@ -6,7 +6,7 @@ RUN addgroup -S appgroup && adduser -S app -G appgroup
 RUN apk update && apk add curl
 RUN apk add --no-cache bash
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-RUN apk add nodejs
+RUN apk add --no-cache nodejs
 COPY . .
 
 RUN chown -R app:app /app/
