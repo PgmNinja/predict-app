@@ -1,7 +1,7 @@
 FROM node:15.13-alpine
 WORKDIR /app/prediction-app-frontend
 
-RUN useradd --system --user-group app
+RUN addgroup -S appgroup && adduser -S app -G appgroup
 
 RUN apk add --no-cache su-exec
 
