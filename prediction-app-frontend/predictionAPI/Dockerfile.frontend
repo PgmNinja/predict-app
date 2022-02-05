@@ -1,7 +1,7 @@
 FROM node:15.13-alpine
 WORKDIR /app/prediction-app-frontend
-RUN apk update && apk install -y curl
+RUN apk update && apk install curl
 RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
-RUN apk update && apk install -y nodejs
+RUN apk update && apk install nodejs
 COPY . .
 RUN npm run build
