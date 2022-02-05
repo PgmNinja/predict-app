@@ -71,7 +71,7 @@ services:
   backend:
     build:
       context: ./prediction-app-backend
-    command: gunicorn prediction-app-backend/core.wsgi --bind 0.0.0.0:8000
+    command: gunicorn --chdir prediction-app-backend/core prediction-app-backend/core.wsgi --bind 0.0.0.0:8000
     container_name: backend
     ports:
       - "8000:8000"
