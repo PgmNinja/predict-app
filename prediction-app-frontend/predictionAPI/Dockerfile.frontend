@@ -4,6 +4,7 @@ WORKDIR /app/prediction-app-frontend
 RUN addgroup -S appgroup && adduser -S app -G appgroup
 
 RUN apk update && apk add curl
+RUN apk add --no-cache bash
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 RUN apk update && apk add nodejs
 COPY . .
