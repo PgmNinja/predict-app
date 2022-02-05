@@ -4,19 +4,19 @@ RUN pip install --upgrade pip
 
 RUN useradd --system --user-group app
 
-WORKDIR /prediction-app-backend
+WORKDIR /app/prediction-app-backend
 COPY requirements.txt requirements.txt
 RUN pip install --quiet --no-cache-dir -r requirements.txt
 
-COPY ./entrypoint.sh /prediction-app-backend
-RUN sed -i 's/\r$//g' /prediction-app-backend/entrypoint.sh
-RUN chmod +x /prediction-app-backend/entrypoint.sh
+COPY ./entrypoint.sh /app/
+RUN sed -i 's/\r$//g' /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 
 EXPOSE 5001
 COPY . .
 
-RUN chown -R app:app /prediction-app-backend
+RUN chown -R app:app /app/
 USER app
 
-RUN ["chmod", "+x", "/prediction-app-backend/entrypoint.sh"]
-ENTRYPOINT ["/prediction-app-backend/entrypoint.sh"]
+RUN ["chmod", "+x", "/app/entrypoint.sh"]
+ENTRYPOINT ["/app/entrypoint.sh"]
