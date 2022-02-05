@@ -11,9 +11,9 @@ RUN pip install --quiet --no-cache-dir -r requirements.txt
 WORKDIR /app/prediction-app-frontend
 
 COPY . /app/
-COPY ./prediction-app-backend/entrypoint.sh /app/
-RUN sed -i 's/\r$//g' /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh
+COPY ./entrypoint-prod.sh /app/
+RUN sed -i 's/\r$//g' /app/entrypoint-prod.sh
+RUN chmod +x /app/entrypoint-prod.sh
 
 EXPOSE 5001
 COPY . .
@@ -21,5 +21,5 @@ COPY . .
 RUN chown -R app:app /app/
 USER app
 
-RUN ["chmod", "+x", "/app/entrypoint.sh"]
-ENTRYPOINT ["/app/entrypoint.sh"]
+RUN ["chmod", "+x", "/app/entrypoint-prod.sh"]
+ENTRYPOINT ["/app/entrypoint-prod.sh"]

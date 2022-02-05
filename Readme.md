@@ -1,0 +1,1 @@
+Split the entrypoint for both staging and production
