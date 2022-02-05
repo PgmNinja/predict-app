@@ -1,11 +1,16 @@
 FROM node:15.13-alpine
 WORKDIR /app/prediction-app-frontend
 
+
 RUN apk update && apk add --no-cache wget
 RUN apk add --no-cache libuv \
     && apk add --no-cache --update-cache  nodejs nodejs-npm \
     && echo "NodeJS Version:" "$(node -v)" \
     && echo "NPM Version:" "$(npm -v)"
+
+COPY ./package.json ./package-lock.json /app/prediction-app-frontend/
+RUN npm install
+
 COPY . .
 
 RUN npm run build
