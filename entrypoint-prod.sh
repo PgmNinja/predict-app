@@ -1,6 +1,12 @@
 #!/bin/sh
 
-python prediction-app-backend/manage.py makemigrations --no-input
-python prediction-app-backend/manage.py migrate --no-input
+if [ "$DATABASE" = "postgres" ]
+then
+    echo "Waiting for postgres..."
 
+    while ! nc -z $SQL_HOST $SQL_PORT; do
+      sleep 0.1
+    done
 
+    echo "PostgreSQL started"
+fi
