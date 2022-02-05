@@ -8,15 +8,9 @@ WORKDIR /app/prediction-app-backend
 COPY requirements.txt requirements.txt
 RUN pip install --quiet --no-cache-dir -r requirements.txt
 
-COPY ./entrypoint.sh /app/
-RUN sed -i 's/\r$//g' /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh
-
 EXPOSE 5001
 COPY . .
 
 RUN chown -R app:app /app/
 USER app
 
-RUN ["chmod", "+x", "/app/entrypoint.sh"]
-ENTRYPOINT ["/app/entrypoint.sh"]
