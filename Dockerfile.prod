@@ -10,8 +10,6 @@ RUN pip install --quiet --no-cache-dir -r requirements.txt
 
 WORKDIR /prediction-app-frontend
 
-COPY ./prediction-app-frontend/package.json /prediction-app-frontend
-
 COPY ./entrypoint-prod.sh /prediction-app-backend
 RUN sed -i 's/\r$//g' /prediction-app-backend/entrypoint.sh
 RUN chmod +x /prediction-app-backend/entrypoint.sh
