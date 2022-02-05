@@ -30,7 +30,7 @@ services:
   celery_worker:
     build:
       context: ./prediction-app-backend
-    # command: celery -A core worker -l info
+    command: celery -A core worker -l info
     container_name: celery_worker
     depends_on:
       - backend
@@ -56,7 +56,7 @@ services:
   celery_beat:
     build:
         context: ./prediction-app-backend
-    # command: celery -A core worker -l info -B
+    command: celery -A core worker -l info -B
     container_name: celery_beat
     depends_on:
       - backend
@@ -71,7 +71,7 @@ services:
   backend:
     build:
       context: ./prediction-app-backend
-    # command: gunicorn core.wsgi --bind 0.0.0.0:8000
+    command: gunicorn core.wsgi --bind 0.0.0.0:8000
     container_name: backend
     ports:
       - "8000:8000"
