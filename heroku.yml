@@ -1,4 +1,4 @@
 build:
   docker:
-    backend: Dockerfile.backend
-    frontend: Dockerfile.frontend
+    backend: prediction-app-backend/Dockerfile.backend
+    frontend: prediction-app-frontend/predictionAPI/Dockerfile.frontend
