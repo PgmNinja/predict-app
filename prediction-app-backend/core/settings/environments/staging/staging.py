@@ -5,7 +5,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['epl-prediction-app.herokuapp.com']
+ALLOWED_HOSTS = ['epl-prediction-app.herokuapp.com', 'www.epl-prediction-app.herokuapp.com']
 
 DATABASES = {
     'default': {
