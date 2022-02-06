@@ -30,6 +30,7 @@ services:
   celery_worker:
     build:
       context: ./prediction-app-backend
+      dockerfile: Dockerfile.backend
     command: celery -A core worker -l info
     container_name: celery_worker
     depends_on:
@@ -56,6 +57,7 @@ services:
   celery_beat:
     build:
         context: ./prediction-app-backend
+        dockerfile: Dockerfile.backend
     command: celery -A core worker -l info -B
     container_name: celery_beat
     depends_on:

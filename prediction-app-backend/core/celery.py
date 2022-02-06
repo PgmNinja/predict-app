@@ -2,8 +2,11 @@ from __future__ import absolute_import, unicode_literals
 import os
 from celery import Celery
 from celery.schedules import crontab
+from core.settings.current_env import django_setup
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
+django_setup()
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings.staging.staging')
 app = Celery('core')
 app.conf.enable_utc = False
 app.conf.update(timezone = 'Asia/Kolkata')
