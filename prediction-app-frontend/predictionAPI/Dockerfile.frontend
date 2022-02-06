@@ -1,6 +1,6 @@
 FROM node:15.13-alpine
-WORKDIR /app/prediction-app-frontend
 
+WORKDIR /app/prediction-app-frontend
 
 RUN apk update && apk add --no-cache wget
 RUN apk add --no-cache libuv \
@@ -14,3 +14,6 @@ RUN npm install
 COPY . .
 
 RUN npm run build
+
+# RUN chown -R nobody:nobody /nobody/
+
