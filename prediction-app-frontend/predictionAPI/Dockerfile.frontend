@@ -24,5 +24,6 @@ RUN npm run build
 # The second stage
 # Copy React static files and start nginx
 FROM nginx:stable-alpine
+RUN apk update && apk add -y install sudo
 COPY --from=build /app/prediction-app-frontend/build /usr/share/nginx/html
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["sudo", "nginx -g", "daemon off;"]
