@@ -114,7 +114,7 @@ const AnalysisPage = ({history}) => {
   
   let analysisResult = async () => {
     setLoading(true)
-    fetch('http://127.0.0.1/api/analysis/', {
+    fetch('http://0.0.0.0/api/analysis/', {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

@@ -58,7 +58,7 @@ const PredictionPage = ({history}) => {
 
     let predictResult = async () => {
         setLoading(true)
-        fetch('http://127.0.0.1/api/predict/', {
+        fetch('http://0.0.0.0/api/predict/', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
