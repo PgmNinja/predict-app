@@ -8,7 +8,7 @@ SECRET_KEY = env('SECRET_KEY')
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['192.168.1.2']
+ALLOWED_HOSTS = ['0.0.0.0']
 
 DATABASES = {
     'default': {

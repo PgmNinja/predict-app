@@ -10,7 +10,6 @@ services:
       - "6379:6379"
     restart: on-failure
 
-
   postgres:
     container_name: postgres
     hostname: postgres
@@ -53,7 +52,6 @@ services:
       - main
     restart: on-failure
 
-
   celery_beat:
     build:
         context: ./prediction-app-backend
@@ -69,7 +67,6 @@ services:
       - main
     restart: on-failure
 
-
   backend:
     build:
       dockerfile: Dockerfile.backend
@@ -83,25 +80,14 @@ services:
     networks:
       - main
     restart: on-failure
-    
     depends_on:
       - postgres
       - redis
 
-
-  frontend:
-    build:
-      dockerfile: Dockerfile.frontend
-      context: ./prediction-app-frontend/predictionAPI
-    container_name: frontend
-    networks:
-      - main
-    restart: on-failure
-    volumes:
-      - react_build:/prediction-app-frontend/build
-
   nginx:
-    image: nginx:latest
+    build:
+      context: ./prediction-app-frontend/predictionAPI
+      dockerfile: Dockerfile.frontend
     container_name: nginx
     networks:
       - main
@@ -110,15 +96,11 @@ services:
       - 80:8080
     volumes:
       - ./nginx/nginx-setup.conf:/etc/nginx/conf.d/default.conf:ro
-      - react_build:/var/www/prediction-app-frontend
     depends_on:
       - backend
-      - frontend
-
 
 networks:
   main:
 
 volumes:
-  react_build:
   postgresql-data:
