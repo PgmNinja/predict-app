@@ -79,6 +79,8 @@ services:
       - 8000
     networks:
       - main
+    links:
+      - postgres:postgres
     restart: on-failure
     depends_on:
       - postgres
