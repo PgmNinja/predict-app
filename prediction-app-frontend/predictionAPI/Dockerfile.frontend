@@ -25,6 +25,6 @@ RUN npm run build
 # Copy React static files and start nginx
 FROM nginx:stable-alpine
 COPY --from=build /app/prediction-app-frontend/build /usr/share/nginx/html
-COPY /nginx/nginx-setup.conf /etc/nginx/conf.d/nginx-setup.conf
+COPY ./nginx/nginx-setup.conf /etc/nginx/conf.d/nginx-setup.conf
 CMD /bin/bash -c "envsubst '\$PORT' < /etc/nginx/conf.d/nginx-setup.conf > /etc/nginx/conf.d/default.conf" && nginx -g 'daemon off;'
 # CMD ["nginx", "-g", "daemon off;"]
