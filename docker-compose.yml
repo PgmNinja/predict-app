@@ -97,7 +97,7 @@ services:
     ports:
       - 80:8080
     volumes:
-      - ./nginx/nginx-setup.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./prediction-app-frontend/predictionAPI/nginx/nginx-setup.conf:/etc/nginx/conf.d/default.conf:ro
     environment:
       PGID: 1000
       PUID: 1000
