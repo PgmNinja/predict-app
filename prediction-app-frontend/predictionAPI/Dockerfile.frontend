@@ -29,10 +29,18 @@ RUN curl -L https://github.com/a8m/envsubst/releases/download/v1.1.0/envsubst-`u
     chmod +x envsubst && \
     mv envsubst /usr/local/bin
 COPY ./nginx/nginx.config /etc/nginx/nginx.template
+
+WORKDIR /app
+
+RUN chown -R nginx:nginx /app && chmod -R 755 /app && \
+        chown -R nginx:nginx /var/cache/nginx && \
+        chown -R nginx:nginx /var/log/nginx && \
+        chown -R nginx:nginx /etc/nginx/conf.d
+RUN touch /var/run/nginx.pid && \
+        chown -R nginx:nginx /var/run/nginx.pid
+
+USER nginx
+
 CMD ["/bin/sh", "-c", "envsubst < /etc/nginx/nginx.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
 COPY --from=build /app/prediction-app-frontend/build /usr/share/nginx/html
 
-RUN chown -R nginx:nginx /prediction-app-frontend && chmod -R 755 /app/prediction-app-frontend && \
-        chown -R nginx:nginx /etc/nginx/conf.d/default.conf 
-
-USER nginx
