@@ -4,4 +4,4 @@ build:
     nginx: prediction-app-frontend/predictionAPI/Dockerfile.frontend
   
 run:
-  web: gunicorn prediction-app-backend/core.wsgi --bind 0.0.0.0:8000
+  backend: gunicorn prediction-app-backend/core.wsgi --bind 0.0.0.0:8000
