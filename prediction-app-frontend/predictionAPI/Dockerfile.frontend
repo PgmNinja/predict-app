@@ -26,15 +26,15 @@ RUN npm run build
 FROM nginx:1.17-alpine
 #################################################################
 
-# RUN chown -R nginx:nginx /var/cache/nginx && \
-#         chown -R nginx:nginx /var/log/nginx && \
-#         chown -R nginx:nginx /etc/nginx/conf.d && \
-#         chown -R nginx:nginx /etc/nginx/nginx.conf && \
-#         chown -R nginx:nginx /etc/nginx/nginx.conf && \
-#         chown -R nginx:nginx /bin/sh
+RUN chown -R nginx:nginx /var/cache/nginx && \
+        chown -R root:root /var/log/nginx && \
+        chown -R root:root /etc/nginx/conf.d && \
+        chown -R root:root /etc/nginx/nginx.conf && \
+        chown -R root:root /etc/nginx/nginx.conf && \
+        chown -R root:root /bin/sh
 
-# RUN touch /var/run/nginx.pid && \
-#         chown -R nginx:nginx /var/run/nginx.pid
+RUN touch /var/run/nginx.pid && \
+        chown -R root:root /var/run/nginx.pid
 
 USER root
 ##################################################################
