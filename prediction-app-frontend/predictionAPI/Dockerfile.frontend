@@ -30,10 +30,8 @@ RUN curl -L https://github.com/a8m/envsubst/releases/download/v1.1.0/envsubst-`u
     mv envsubst /usr/local/bin
 COPY ./nginx/nginx.config /etc/nginx/nginx.template
 #################################################################
-WORKDIR /app/prediction-app-frontend
 
-RUN chown -R nginx:nginx /app/prediction-app-frontend && chmod -R 755 /app/prediction-app-frontend && \
-        chown -R nginx:nginx /var/cache/nginx && \
+RUN chown -R nginx:nginx /var/cache/nginx && \
         chown -R nginx:nginx /var/log/nginx && \
         chown -R nginx:nginx /etc/nginx/conf.d && \
         chown -R nginx:nginx /etc/nginx/nginx.conf
