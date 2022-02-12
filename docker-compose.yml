@@ -71,7 +71,7 @@ services:
     build:
       dockerfile: Dockerfile.backend
       context: ./prediction-app-backend
-    command: gunicorn core.wsgi --bind 0.0.0.0:8000
+    # command: gunicorn core.wsgi --bind 0.0.0.0:8000
     container_name: backend
     ports:
       - "8000:8000"
