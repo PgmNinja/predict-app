@@ -58,7 +58,7 @@ const PredictionPage = ({history}) => {
 
     let predictResult = async () => {
         setLoading(true)
-        fetch('https://epl-prediction-app.herokuapp.com/api/predict/', {
+        fetch('http://0.0.0.0/api/predict/', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

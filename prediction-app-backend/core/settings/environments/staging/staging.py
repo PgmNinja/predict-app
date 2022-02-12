@@ -19,4 +19,4 @@ ALLOWED_HOSTS = ['epl-prediction-app.herokuapp.com', 'www.epl-prediction-app.her
 #     }
 # }
 DATABASES = {}
-DATABASES['default'] = dj_database_url.config(default='postgres://kjjittyukydluk:999c986e263f1b7892b0a969c1a09471c2c4f00b73641ebde9c898ec38bc8243@ec2-44-194-225-27.compute-1.amazonaws.com:5432/dffgnpd4653473')
+DATABASES['default'] = dj_database_url.config(default='postgres://vqikhoufeoinjn:569c8d40ef73c60ca9c6a321ce6439b6edb20ca9e97284af920ad794b71a23cf@ec2-3-230-199-240.compute-1.amazonaws.com:5432/dfrtf4g287ef1j')
