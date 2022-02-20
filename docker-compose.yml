@@ -10,25 +10,9 @@ services:
       - "6379:6379"
     restart: on-failure
 
-  # postgres:
-  #   container_name: postgres
-  #   hostname: postgres
-  #   image: postgres:latest
-  #   environment:
-  #     - POSTGRES_USER=postgres
-  #     - POSTGRES_PASSWORD=postgres
-  #     - POSTGRES_DB=postgres
-  #   networks:
-  #     - main
-  #   ports:
-  #     - "5432:5432"
-  #   restart: on-failure
-  #   volumes:
-  #     - postgresql-data:/var/lib/postgresql/data
-
   celery_worker:
     build:
-      context: ./prediction-app-backend
+      context: ./backend
       dockerfile: Dockerfile.backend
     command: celery -A core worker -l info
     container_name: celery_worker
@@ -53,7 +37,7 @@ services:
 
   celery_beat:
     build:
-        context: ./prediction-app-backend
+        context: ./backend
         dockerfile: Dockerfile.backend
     command: celery -A core worker -l info -B
     container_name: celery_beat
@@ -68,8 +52,9 @@ services:
   backend:
     build:
       dockerfile: Dockerfile.backend
-      context: ./prediction-app-backend
-    command: gunicorn core.wsgi --bind 0.0.0.0:$PORT
+      context: ./backend
+    volumes:
+      - ./backend:/app/backend
     container_name: backend
     ports:
       - "8000:8000"
@@ -78,22 +63,26 @@ services:
     networks:
       - main
     restart: on-failure
+    stdin_open: true
+    tty: true
     depends_on:
       - redis
 
-  nginx:
+  frontend:
     build:
-      context: ./prediction-app-frontend/predictionAPI
+      context: ./frontend
       dockerfile: Dockerfile.frontend
-    container_name: nginx
+    container_name: frontend
+    volumes:
+      - ./frontend:/app/frontend
     networks:
       - main
     restart: on-failure
     ports:
-      - "80:8080"
+      - "3000:3000"
     environment:
-      - PORT=8080
-    command: nginx -g 'daemon off;'
+      - NODE_ENV=development
+    command: npm start
     depends_on:
       - backend
 

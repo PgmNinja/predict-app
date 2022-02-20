@@ -2,3 +2,6 @@ build:
   docker:
     backend: prediction-app-backend/Dockerfile.backend
     nginx: prediction-app-frontend/predictionAPI/Dockerfile.frontend
+
+run:
+  backend: cd /app/prediction-app-frontend && gunicorn core.wsgi --bind 0.0.0.0:$PORT

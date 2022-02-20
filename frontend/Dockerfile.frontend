@@ -1,0 +1,32 @@
+# The first stage
+# Build React static files
+# FROM node:15.13-alpine as build
+
+FROM node:15.13-alpine as build
+
+WORKDIR /app/prediction-app-frontend
+
+RUN apk update && apk add --no-cache wget
+RUN apk add --no-cache libuv \
+    && apk add --no-cache --update-cache  nodejs nodejs-npm \
+    && echo "NodeJS Version:" "$(node -v)" \
+    && echo "NPM Version:" "$(npm -v)"
+
+COPY ./package.json /app/prediction-app-frontend
+COPY ./package-lock.json /app/prediction-app-frontend
+
+RUN npm ci --silent
+RUN npm install
+
+COPY ./entrypoint.sh /app/prediction-app-frontend
+RUN sed -i 's/\r$//g' /app/prediction-app-frontend/entrypoint.sh
+RUN chmod +x /app/prediction-app-frontend/entrypoint.sh
+
+COPY . .
+
+EXPOSE 3000
+
+CMD npm start
+
+RUN ["chmod", "+x", "/app/prediction-app-frontend/entrypoint.sh"]
+ENTRYPOINT ["/app/prediction-app-frontend/entrypoint.sh"]
