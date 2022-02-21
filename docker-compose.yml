@@ -55,6 +55,7 @@ services:
       context: ./backend
     volumes:
       - ./backend:/app/backend-prediction
+    command: python3 manage.py runserver 0.0.0.0:8000
     container_name: backend
     environment:
       - DJANGO_SETTINGS_MODULE=backend.settings.environments.local
