@@ -1,6 +1,6 @@
 #!/bin/sh
 
-until cd /app/prediction-app-backend
+until cd /app/backend
 do
     echo "Waiting for server volume..."
 done

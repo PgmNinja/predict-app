@@ -2,9 +2,9 @@
 # Build React static files
 # FROM node:15.13-alpine as build
 
-FROM node:15.13-alpine as build
+FROM node:15.13-alpine
 
-WORKDIR /app/prediction-app-frontend
+WORKDIR /app/frontend
 
 RUN apk update && apk add --no-cache wget
 RUN apk add --no-cache libuv \
@@ -12,21 +12,19 @@ RUN apk add --no-cache libuv \
     && echo "NodeJS Version:" "$(node -v)" \
     && echo "NPM Version:" "$(npm -v)"
 
-COPY ./package.json /app/prediction-app-frontend
-COPY ./package-lock.json /app/prediction-app-frontend
+COPY ./package.json /app/frontend
+COPY ./package-lock.json /app/frontend
 
 RUN npm ci --silent
 RUN npm install
 
-COPY ./entrypoint.sh /app/prediction-app-frontend
-RUN sed -i 's/\r$//g' /app/prediction-app-frontend/entrypoint.sh
-RUN chmod +x /app/prediction-app-frontend/entrypoint.sh
+COPY ./entrypoint.sh /app/frontend
+RUN sed -i 's/\r$//g' /app/frontend/entrypoint.sh
+RUN chmod +x /app/frontend/entrypoint.sh
 
 COPY . .
 
 EXPOSE 3000
 
-CMD npm start
-
-RUN ["chmod", "+x", "/app/prediction-app-frontend/entrypoint.sh"]
-ENTRYPOINT ["/app/prediction-app-frontend/entrypoint.sh"]
+RUN ["chmod", "+x", "/app/frontend/entrypoint.sh"]
+ENTRYPOINT ["/app/frontend/entrypoint.sh"]

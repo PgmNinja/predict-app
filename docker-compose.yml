@@ -54,7 +54,7 @@ services:
       dockerfile: Dockerfile.backend
       context: ./backend
     volumes:
-      - ./backend:/app/backend
+      - ./backend:/app/backend-prediction
     container_name: backend
     environment:
       - DJANGO_SETTINGS_MODULE=backend.settings.environments.local
@@ -76,7 +76,7 @@ services:
       dockerfile: Dockerfile.frontend
     container_name: frontend
     volumes:
-      - ./frontend:/app/frontend
+      - ./frontend:/app/frontend-prediction
     networks:
       - main
     restart: on-failure
