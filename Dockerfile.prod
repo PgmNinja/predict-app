@@ -3,9 +3,9 @@ ENV PYTHONUNBUFFERED 1
 RUN pip install --upgrade pip
 
 # Install curl, node, & yarn
-RUN apk update && apk add --no-cache wget
-RUN apk add --no-cache libuv \
-    && apk add --no-cache --update-cache  nodejs nodejs-npm \
+RUN apt update && apk add --no-cache wget
+RUN apt install --no-cache libuv \
+    && apt install --no-cache --update-cache  nodejs nodejs-npm \
     && echo "NodeJS Version:" "$(node -v)" \
     && echo "NPM Version:" "$(npm -v)"
 
