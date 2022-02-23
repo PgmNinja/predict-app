@@ -1,0 +1,53 @@
+FROM python:3.8-slim
+ENV PYTHONUNBUFFERED 1
+RUN pip install --upgrade pip
+
+# Install curl, node, & yarn
+RUN apk update && apk add --no-cache wget
+RUN apk add --no-cache libuv \
+    && apk add --no-cache --update-cache  nodejs nodejs-npm \
+    && echo "NodeJS Version:" "$(node -v)" \
+    && echo "NPM Version:" "$(npm -v)"
+
+WORKDIR /app/backend
+COPY requirements.txt requirements.txt
+RUN pip install --quiet --no-cache-dir -r requirements.txt
+COPY ./entrypoint-prod.sh /app/backend/
+
+# Install JS dependencies
+WORKDIR /app/frontend
+
+COPY ./frontend/package.json /app/frontend
+COPY ./frontend/package-lock.json /app/frontend
+
+
+RUN npm ci --silent
+RUN npm install
+
+#####################################################################
+
+# Add the rest of the code
+
+# Build static files
+RUN npm run build
+
+# Have to move all static files other than index.html to root/
+# for whitenoise middleware
+WORKDIR /app/frontend/build
+
+RUN mkdir root && mv *.ico *.js *.json root
+
+# Collect static files
+RUN mkdir /app/backend/staticfiles
+
+WORKDIR /app/backend
+
+# SECRET_KEY is only included here to avoid raising an error when generating static files.
+# Be sure to add a real SECRET_KEY config variable in Heroku.
+RUN SECRET_KEY=TEST_SECRET_KEY \
+    python3 manage.py collectstatic --noinput
+
+EXPOSE $PORT
+
+RUN ["chmod", "+x", "/app/backend/entrypoint-prod.sh"]
+ENTRYPOINT ["/app/backend/entrypoint-prod.sh"]
