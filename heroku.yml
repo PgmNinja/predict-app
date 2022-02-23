@@ -3,4 +3,4 @@ build:
     web: Dockerfile.prod
 
 run:
-  web: -i sh -c "cd /app/prediction-app-frontend && python3 manage.py runserver 0.0.0.0:$PORT"
+  web: -i sh -c "cd /app/backend && python3 manage.py runserver 0.0.0.0:$PORT"
