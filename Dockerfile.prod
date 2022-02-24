@@ -35,7 +35,7 @@ RUN npm run build --prod
 # for whitenoise middleware
 WORKDIR /app/frontend/build
 
-# RUN mkdir root && mv *.ico *.js *.json root
+RUN mkdir root && mv *.png *.json root
 
 # Collect static files
 RUN mkdir /app/backend/staticfiles
