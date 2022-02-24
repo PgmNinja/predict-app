@@ -8,21 +8,22 @@ RUN apt-get install -y curl \
     && apt-get install -y nodejs
 
 WORKDIR /app/backend
+RUN mkdir frontend
 COPY ./backend/requirements.txt /app/backend/
 RUN pip install --quiet --no-cache-dir -r requirements.txt
 COPY ./entrypoint-prod.sh /app/backend/
 
 # Install JS dependencies
-WORKDIR /app/frontend
+WORKDIR /app/backend/frontend
 
-COPY ./frontend/package.json /app/frontend
-COPY ./frontend/package-lock.json /app/frontend
+COPY ./frontend/package.json /app/backend/frontend
+COPY ./frontend/package-lock.json /app/backend/frontend
 
 
 RUN npm ci --silent
 RUN npm install
 
-COPY ./frontend /app/frontend
+COPY ./frontend /app/backend/frontend
 
 #####################################################################
 
@@ -33,7 +34,7 @@ RUN npm run build --prod
 
 # Have to move all static files other than index.html to root/
 # for whitenoise middleware
-WORKDIR /app/frontend/build
+WORKDIR /app/backend/frontend/build
 
 RUN mkdir root && mv *.png *.json root
 
