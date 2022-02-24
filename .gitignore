@@ -12,8 +12,4 @@ local_settings.py
 
 .env
 db.sqlite3
-
-login.csv
-client_secret.json
-
 env
