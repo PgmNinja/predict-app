@@ -171,16 +171,16 @@
     width: 90%;
     padding-top: 2em;
     padding-left: 1em;
-    margin-left: 1em;
-    padding-bottom: 2em;
+    margin-left: .6em;
+    padding-bottom: 2.5em;
   }
   
   .pie-diagram {
     padding-top: 2em;
     padding-bottom: 2em;
-    margin-left: 7em;
-    height: 42%;
-    width: 42%;
+    margin-left: 6em;
+    height: 45%;
+    width: 45%;
   }
   
   .container {
@@ -234,6 +234,10 @@
     margin-right: 1em;
   }
 
+}
+
+.instrutions{
+  margin-top: -2em;
 }
 
 

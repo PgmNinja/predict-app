@@ -12,6 +12,8 @@ import {
     Legend,
     ArcElement
   } from 'chart.js';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Pie } from 'react-chartjs-2';
 import * as ReactBootStrap from 'react-bootstrap'
 import PredictHeader from '../components/PredictHeader'
@@ -72,7 +74,6 @@ const PredictionPage = ({history}) => {
             return response.json();
            })
            .then(function(data) {
-            console.log('Result:', data)
             setResult(data);
             setProba(data.probability)
             setHome(data.home_team)
@@ -81,7 +82,37 @@ const PredictionPage = ({history}) => {
            });
     }
 
+    const notify_same = () => toast.error('Oops! You selected the same team.', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+
+    const notify_not_select = () => toast.error('Oops! Please select a valid option.', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+
+
     let handleSubmit = () => {
+        if (homeTeam === awayTeam && (homeTeam != "" || awayTeam != "")){
+            notify_same()
+            return;
+        }
+        else if (homeTeam === "" || awayTeam === ""){
+            notify_not_select()
+            return;
+        }
+        
         localStorage.setItem('homeTeam', homeTeam)
         localStorage.setItem('awayTeam', awayTeam)
         predictResult()
@@ -115,6 +146,7 @@ const PredictionPage = ({history}) => {
 
             <div className='select-menu'>
                 <button className='btn btn-secondary' onClick={handleSubmit}>Predict</button>
+                <ToastContainer />
             </div>
    
             {loading ? (

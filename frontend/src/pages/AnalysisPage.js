@@ -50,7 +50,7 @@ const AnalysisPage = ({history}) => {
 
     useEffect(() => {
     getData()
-    analysisResult()  
+    analysisResult()
     }, [])
 
     let getData = () => {
@@ -108,10 +108,6 @@ const AnalysisPage = ({history}) => {
       ],
     };
 
-
-
-  
-  
   let analysisResult = async () => {
     setLoading(true)
     fetch('/api/analysis/', {
@@ -127,15 +123,12 @@ const AnalysisPage = ({history}) => {
       return response.json();
      })
      .then(function(data) {
-      console.log('Result:', data)
-
       setHomeStats(data.home_win_stats)
       setAwayStats(data.away_win_stats)
       setYears(data.years)
       setHeadToHead(data.count)
       setPolarity(data.polarity)
       setLoading(false)
-
      })
 }
  
@@ -172,10 +165,7 @@ const AnalysisPage = ({history}) => {
 
       </div>
     )}
-      
-
     </div>
 
 };
-
 export default AnalysisPage;
