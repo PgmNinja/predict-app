@@ -118,8 +118,3 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
-
-CELERY_BROKER_URL = 'redis://redis:6379/0'
-CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
-CELERY_IMPORTS = ['services.tasks']
-CELERY_RESULT_BACKEND = "django-db"
